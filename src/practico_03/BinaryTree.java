@@ -13,7 +13,7 @@ Métodos:
     getElemAtLevel(int)
 
     1. ¿Cuál es la complejidad de cada uno de estos métodos?
- */
+*/
 
 public class BinaryTree {
     private TreeNode root;
@@ -60,10 +60,11 @@ public class BinaryTree {
 
     // En el peor caso, la complejidad es O(n).
     public void insert(Integer value) {
-        if (this.root == null)
+        if (this.root == null) {
             this.root = new TreeNode(value);
-        else
-            this.insert(this.root, value);
+        } else {
+            insert(this.root, value);
+        }
     }
 
     private void insert(TreeNode node, Integer value) {
@@ -255,5 +256,47 @@ public class BinaryTree {
                 getElemAtLevel(node.getRight(), level, elements, currentLevel + 1);
             }
         }
+    }
+
+    /*
+    Ejercicio 2
+    Dado un árbol binario de búsquedas que almacena números enteros, implementar un algoritmo
+    que retorne la suma de todos los nodos internos del árbol.
+    */
+    public int sumInternalNodes() {
+        return sumInternalNodes(this.root);
+    }
+
+    private int sumInternalNodes(TreeNode node) {
+        if (node == null || (node.getLeft() == null && node.getRight() == null)) {
+            return 0;
+        }
+
+        return node.getValue() + sumInternalNodes(node.getLeft()) + sumInternalNodes(node.getRight());
+    }
+
+    /*
+     Ejercicio 3
+    Dado un árbol binario de búsqueda que almacena números enteros y un valor de entrada K, implementar un
+    algoritmo que permita obtener un listado con los valores de todas las hojas cuyo valor supere K. Por ejemplo,
+    para el árbol de la derecha, con un valor K = 8, el resultado debería ser [9, 11].
+    */
+    public List<Integer> findLeavesGreaterThanK(int k) {
+        List<Integer> result = new ArrayList<>();
+        findLeavesGreaterThanK(this.root, k, result);
+        return result;
+    }
+
+    private void findLeavesGreaterThanK(TreeNode node, int k, List<Integer> result) {
+        if (node == null) {
+            return;
+        }
+
+        if (node.getLeft() == null && node.getRight() == null && node.getValue() > k) {
+            result.add(node.getValue());
+        }
+
+        findLeavesGreaterThanK(node.getLeft(), k, result);
+        findLeavesGreaterThanK(node.getRight(), k, result);
     }
 }
