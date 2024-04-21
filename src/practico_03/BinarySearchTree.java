@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /*
-Ejercicio 1.
+Ejercicio 1
 Implemente la estructura de Árbol Binario para búsquedas.
 Métodos:
     • Integer getRoot(), boolean hasElem(Integer), boolean isEmpty(), void insert(Integer),
@@ -15,10 +15,10 @@ Métodos:
     1. ¿Cuál es la complejidad de cada uno de estos métodos?
 */
 
-public class BinaryTree {
-    private TreeNode root;
+public class BinarySearchTree {
+    private TreeNodeInt root;
 
-    public BinaryTree() {
+    public BinarySearchTree() {
         this.root = null;
     }
 
@@ -37,7 +37,7 @@ public class BinaryTree {
         return hasElem(this.root, value);
     }
 
-    private boolean hasElem(TreeNode node, Integer value) {
+    private boolean hasElem(TreeNodeInt node, Integer value) {
         if (node == null) {
             return false;
         }
@@ -61,23 +61,23 @@ public class BinaryTree {
     // En el peor caso, la complejidad es O(n).
     public void insert(Integer value) {
         if (this.root == null) {
-            this.root = new TreeNode(value);
+            this.root = new TreeNodeInt(value);
         } else {
             insert(this.root, value);
         }
     }
 
-    private void insert(TreeNode node, Integer value) {
+    private void insert(TreeNodeInt node, Integer value) {
         if (node.getValue() > value) {
             if (node.getLeft() == null) {
-                TreeNode temp = new TreeNode(value);
+                TreeNodeInt temp = new TreeNodeInt(value);
                 node.setLeft(temp);
             } else {
                 insert(node.getLeft(),value);
             }
         } else if (node.getValue() < value) {
             if (node.getRight() == null) {
-                TreeNode temp = new TreeNode(value);
+                TreeNodeInt temp = new TreeNodeInt(value);
                 node.setRight(temp);
             } else {
                 insert(node.getRight(),value);
@@ -95,7 +95,7 @@ public class BinaryTree {
         return false;
     }
 
-    private TreeNode delete(TreeNode node, Integer value) {
+    private TreeNodeInt delete(TreeNodeInt node, Integer value) {
         if (value < node.getValue()) {
             node.setLeft(delete(node.getLeft(), value));
         } else if (value > node.getValue()) {
@@ -107,7 +107,7 @@ public class BinaryTree {
                 return node.getLeft();
             }
 
-            TreeNode minValueNode = findMinValueNode(node.getRight());
+            TreeNodeInt minValueNode = findMinValueNode(node.getRight());
             node.setValue(minValueNode.getValue());
             node.setRight(delete(node.getRight(), minValueNode.getValue()));
         }
@@ -115,8 +115,8 @@ public class BinaryTree {
         return node;
     }
 
-    private TreeNode findMinValueNode(TreeNode node) {
-        TreeNode current = node;
+    private TreeNodeInt findMinValueNode(TreeNodeInt node) {
+        TreeNodeInt current = node;
 
         while (current.getLeft() != null) {
             current = current.getLeft();
@@ -130,7 +130,7 @@ public class BinaryTree {
         return getHeight(this.root);
     }
 
-    private int getHeight(TreeNode node) {
+    private int getHeight(TreeNodeInt node) {
         if (node == null)
             return 0;
         else {
@@ -147,7 +147,7 @@ public class BinaryTree {
         System.out.println();
     }
 
-    private void printPosOrder(TreeNode node) {
+    private void printPosOrder(TreeNodeInt node) {
         if (node != null) {
             printPosOrder(node.getLeft());
             printPosOrder(node.getRight());
@@ -161,7 +161,7 @@ public class BinaryTree {
         System.out.println();
     }
 
-    private void printPreOrder(TreeNode node) {
+    private void printPreOrder(TreeNodeInt node) {
         if (node != null) {
             System.out.print(node.getValue() + " ");
             printPreOrder(node.getLeft());
@@ -175,7 +175,7 @@ public class BinaryTree {
         System.out.println();
     }
 
-    private void printInOrder(TreeNode node) {
+    private void printInOrder(TreeNodeInt node) {
         if (node != null) {
             printInOrder(node.getLeft());
             System.out.print(node.getValue() + " ");
@@ -190,7 +190,7 @@ public class BinaryTree {
         return longestBranch;
     }
 
-    private void getLongestBranch(TreeNode node, List<Integer> longestBranch) {
+    private void getLongestBranch(TreeNodeInt node, List<Integer> longestBranch) {
         if (node != null) {
             longestBranch.add(node.getValue());
 
@@ -212,7 +212,7 @@ public class BinaryTree {
         return frontera;
     }
 
-    private void getFrontera(TreeNode node, List<Integer> frontera) {
+    private void getFrontera(TreeNodeInt node, List<Integer> frontera) {
         if (node != null) {
             if (node.getLeft() == null && node.getRight() == null) {
                 frontera.add(node.getValue());
@@ -230,7 +230,7 @@ public class BinaryTree {
             return null;
         }
 
-        TreeNode current = this.root;
+        TreeNodeInt current = this.root;
 
         while (current.getRight() != null) {
             current = current.getRight();
@@ -247,7 +247,7 @@ public class BinaryTree {
         return elements;
     }
 
-    private void getElemAtLevel(TreeNode node, int level, List<Integer> elements, int currentLevel) {
+    private void getElemAtLevel(TreeNodeInt node, int level, List<Integer> elements, int currentLevel) {
         if (node != null) {
             if (currentLevel == level) {
                 elements.add(node.getValue());
@@ -267,7 +267,7 @@ public class BinaryTree {
         return sumInternalNodes(this.root);
     }
 
-    private int sumInternalNodes(TreeNode node) {
+    private int sumInternalNodes(TreeNodeInt node) {
         if (node == null || (node.getLeft() == null && node.getRight() == null)) {
             return 0;
         }
@@ -276,7 +276,7 @@ public class BinaryTree {
     }
 
     /*
-     Ejercicio 3
+    Ejercicio 3
     Dado un árbol binario de búsqueda que almacena números enteros y un valor de entrada K, implementar un
     algoritmo que permita obtener un listado con los valores de todas las hojas cuyo valor supere K. Por ejemplo,
     para el árbol de la derecha, con un valor K = 8, el resultado debería ser [9, 11].
@@ -287,16 +287,14 @@ public class BinaryTree {
         return result;
     }
 
-    private void findLeavesGreaterThanK(TreeNode node, int k, List<Integer> result) {
-        if (node == null) {
-            return;
-        }
+    private void findLeavesGreaterThanK(TreeNodeInt node, int k, List<Integer> result) {
+        if (node != null) {
+            if (node.getLeft() == null && node.getRight() == null && node.getValue() > k) {
+                result.add(node.getValue());
+            }
 
-        if (node.getLeft() == null && node.getRight() == null && node.getValue() > k) {
-            result.add(node.getValue());
+            findLeavesGreaterThanK(node.getLeft(), k, result);
+            findLeavesGreaterThanK(node.getRight(), k, result);
         }
-
-        findLeavesGreaterThanK(node.getLeft(), k, result);
-        findLeavesGreaterThanK(node.getRight(), k, result);
     }
 }

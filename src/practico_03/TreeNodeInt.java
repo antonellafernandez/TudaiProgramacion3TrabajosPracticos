@@ -1,29 +1,29 @@
 package practico_03;
 
-public class TreeNode {
+public class TreeNodeInt {
     private Integer value;
-    private TreeNode left;
-    private TreeNode right;
+    private TreeNodeInt left;
+    private TreeNodeInt right;
 
-    public TreeNode(Integer value) {
+    public TreeNodeInt(Integer value) {
         this.value = value;
         this.left = null;
         this.right = null;
     }
 
-    public TreeNode getLeft() {
+    public TreeNodeInt getLeft() {
         return left;
     }
 
-    public void setLeft(TreeNode left) {
+    public void setLeft(TreeNodeInt left) {
         this.left = left;
     }
 
-    public TreeNode getRight() {
+    public TreeNodeInt getRight() {
         return right;
     }
 
-    public void setRight(TreeNode right) {
+    public void setRight(TreeNodeInt right) {
         this.right = right;
     }
 
