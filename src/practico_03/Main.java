@@ -1,5 +1,6 @@
 package practico_03;
 
+import java.sql.SQLOutput;
 import java.util.List;
 
 public class Main {
@@ -22,7 +23,7 @@ public class Main {
         System.out.println("Suma de los nodos internos: " + bst.sumInternalNodes());
 
         System.out.println();
-        
+
         // Ejercicio 3
         int k = 8;
         List<Integer> leaves = bst.findLeavesGreaterThanK(k);
@@ -85,5 +86,42 @@ public class Main {
 
         // Imprimir las palabras con N vocales
         System.out.println(btc.searchWordsWithNVowels(N));
+
+        System.out.println();
+
+        // Ejercicio 6
+        // Crear nuevos libros
+        Book book1 = new Book(123456, "Jorge Luis Borges", 1996, 2);
+        book1.addGenero("Terror");
+
+        Book book2 = new Book(123457, "Julio Cortázar", 1997, 3);
+        book2.addGenero("Fantástico");
+        book2.addGenero("Terror");
+
+        Book book3 = new Book(123455, "Ernesto Sábato", 1995, 4);
+        book3.addGenero("Fantástico");
+        book3.addGenero("Ciencia Ficción");
+        book3.addGenero("Terror");
+
+        // Crear nuevo árbol
+        BinarySearchTreeBook bstb = new BinarySearchTreeBook();
+
+        // Añadir libros
+        bstb.add(book1);
+        bstb.add(book2);
+        bstb.add(book3);
+
+        // Obtener la cantidad de ejemplares de un libro dado su identificador único.
+        int idBuscado = 123455;
+        System.out.println("La cantidad de ejemplares del Libro con id " + idBuscado + " es " + bstb.obtenerCantEjemplares(idBuscado) + ".");
+
+        // Obtener todos los libros de un género dado.
+        String generoBuscado = "Ciencia Ficción";
+        System.out.println(bstb.obtenerLibrosPorGenero(generoBuscado));
+
+        // Obtener todos los libros publicados entre dos años de publicación dados.
+        int anioPublicacion1 = 1990;
+        int anioPublicacion2 = 2000;
+        System.out.println(bstb.obtenerLibrosEntreAniosPublicacion(anioPublicacion1, anioPublicacion2));
     }
 }

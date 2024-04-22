@@ -73,14 +73,14 @@ public class BinarySearchTree {
                 TreeNodeInt temp = new TreeNodeInt(value);
                 node.setLeft(temp);
             } else {
-                insert(node.getLeft(),value);
+                insert(node.getLeft(), value);
             }
         } else if (node.getValue() < value) {
             if (node.getRight() == null) {
                 TreeNodeInt temp = new TreeNodeInt(value);
                 node.setRight(temp);
             } else {
-                insert(node.getRight(),value);
+                insert(node.getRight(), value);
             }
         }
     }
