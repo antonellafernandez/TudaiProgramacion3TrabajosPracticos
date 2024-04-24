@@ -1,4 +1,4 @@
-package practico_03;
+package practico_02_01;
 
 import java.util.ArrayList;
 

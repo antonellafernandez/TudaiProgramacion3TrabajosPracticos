@@ -1,127 +1,134 @@
 package practico_03;
 
-import java.sql.SQLOutput;
-import java.util.List;
-
 public class Main {
     public static void main(String[] args) {
-        // Ejercicio 2
-        BinarySearchTree bst = new BinarySearchTree();
 
-        // Insertar algunos valores en el árbol
-        bst.insert(6);
-        bst.insert(2);
-        bst.insert(10);
-        bst.insert(1);
-        bst.insert(4);
-        bst.insert(8);
-        bst.insert(11);
-        bst.insert(7);
-        bst.insert(9);
+        /*
+        Ejercicio 1
+        Dado el conjunto de elementos: X= {68, 42, 47, 5, 76, 95, 23, 88, 90, 85, 31, 71, 60, 10, 46, 61,
+        50, 92, 74, 6, 97, 66, 1, 56, 27, 7, 14, 92} Realizar la inserción de los mismos en una estructura
+        de Hashing com la que se especifica en cada punto, con las siguientes técnicas de
+        tratamiento de desbordes, muestre gráficamente cómo se va armando la estructura y cómo
+        queda luego de insertar hasta el último elemento:
+        a.- Hashing separado (con M=7 y rp=1, rs=1).
+        b.- Hashing separado con crecimiento (con el comportamiento de HashTable de JAVA) (con M=7, ρd=0,9).
+        */
 
-        // Imprimir la suma de los nodos internos
-        System.out.println("Suma de los nodos internos: " + bst.sumInternalNodes());
+        int[] elements = {68, 42, 47, 5, 76, 95, 23, 88, 90, 85, 31, 71, 60, 10, 46, 61,
+                50, 92, 74, 6, 97, 66, 1, 56, 27, 7, 14, 92};
+        int M = 7;
+        HashTable hashTable = new HashTable(M);
 
-        System.out.println();
+        System.out.println("Insertando elementos en Hashing Separado: ");
 
-        // Ejercicio 3
-        int k = 8;
-        List<Integer> leaves = bst.findLeavesGreaterThanK(k);
-        System.out.println("Valores de las hojas mayores que " + k + ": " + leaves);
+        for (int element : elements) {
+            hashTable.insert(element);
+            hashTable.printTable();
+            System.out.println();
+        }
 
-        System.out.println();
+        double loadFactor = 0.9;
+        DynamicHashTable dynamicHashTable = new DynamicHashTable(M, loadFactor);
 
-        // Ejercicio 4
-        // Crear la estructura del árbol
-        TreeNodeInt root4 = new TreeNodeInt(null);
+        System.out.println("Insertando elementos en Hashing Separado con Crecimiento: ");
+        for (int element : elements) {
+            dynamicHashTable.insert(element);
+            dynamicHashTable.printTable();
+            System.out.println();
+        }
 
-        root4.setLeft(new TreeNodeInt(null));
-        root4.setRight(new TreeNodeInt(null));
+        /*
+        Ejercicio 2
+        Conteste si es posible o no y justifique:
+        1. Si se quisiera listar en orden todas las claves almacenadas en una estructura de
+        hashing, ¿se podría? ¿Cómo? ¿Es la estructura más adecuada?
 
-        root4.getLeft().setLeft(new TreeNodeInt(14));
-        root4.getLeft().setRight(new TreeNodeInt(null));
+        No, no es posible listar en orden todas las claves almacenadas en una estructura de hashing de
+        manera eficiente. El hashing asigna claves a ubicaciones en la tabla de hash mediante una
+        función de dispersión, lo que no garantiza un orden específico.
 
-        root4.getLeft().getRight().setLeft(new TreeNodeInt(7));
-        root4.getLeft().getRight().setRight(new TreeNodeInt(-5));
+        Si se necesita un orden específico, es mejor usar otras estructuras de datos
+        como árboles binarios de búsqueda.
 
-        root4.getRight().setLeft(new TreeNodeInt(null));
-        root4.getRight().setRight(new TreeNodeInt(20));
+        2. ¿Qué tipos de servicios resuelve un hashing? Es posible responder por ejemplo: La
+        lista de todos los alumnos que obtuvieron una nota mayor que x en un curso dado?
 
-        root4.getRight().getLeft().setRight(new TreeNodeInt(9));
+        El hashing es útil principalmente para la búsqueda rápida y eficiente de elementos
+        a través de sus claves. Sin embargo, no es adecuado para operaciones como obtener listas ordenadas
+        de elementos o realizar búsquedas por rangos de valores. Para obtener la lista de todos
+        los alumnos que obtuvieron una nota mayor que x en un curso dado, se necesitaría utilizar una
+        estructura de datos diferente como árboles binarios de búsqueda o estructuras de índice que
+        admitan búsquedas por rango.
+        */
 
-        // Crear nuevo árbol
-        BinaryTreeInt bti = new BinaryTreeInt(root4);
+        /*
+        Ejercicio 3
+        Se está desarrollando una aplicación que almacena los datos y el saldo de las tarjetas de
+        compra de comida del comedor de una universidad. Cada cliente es identificado por su
+        número de DNI, y se poseen además sus datos personales y de la carrera que estudia.
 
-        // Rellenar árbol
-        bti.fillNodes();
+        CLIENTE: DNI, Nombre, Apellido, fecha de nacimiento, domicilio, CP ciudad de origen, saldo
+        de la cuenta, nombre carrera estudia
 
-        // Imprimir árbol
-        bti.printPreOrder();
+        Se quiere:
 
-        System.out.println();
+        a) Dado un DNI de cliente, responder el saldo de su cuenta.
 
-        // Ejercicio 5
-        // Crear la estructura del árbol
-        TreeNodeChar root5 = new TreeNodeChar('M');
+        RTA: HashTable donde las claves sean los números de DNI de los clientes y los valores sean los saldos
+        de sus cuentas.
 
-        root5.setLeft(new TreeNodeChar('A'));
-        root5.setRight(new TreeNodeChar('I'));
+        b) Imprimir un listado de Nombre y Apellido de todos los clientes que tienen en su saldo
+        de cuenta menos de un valor X dado.
 
-        root5.getLeft().setLeft(new TreeNodeChar('L'));
-        root5.getLeft().setRight(new TreeNodeChar('N'));
+        RTA: Árbol de búsqueda binario.
 
-        root5.getLeft().getRight().setLeft(new TreeNodeChar('A'));
-        root5.getLeft().getRight().setRight(new TreeNodeChar('O'));
+        c) Dado un código postal, listar todos los clientes que provengan de esa ciudad.
 
-        root5.getRight().setLeft(new TreeNodeChar('S'));
-        root5.getRight().setRight(new TreeNodeChar('O'));
+        RTA: HashTable donde las claves sean los códigos postales y los valores sean listas enlazadas
+        de clientes que provienen de esa ciudad. Cada cliente tendría asociado su nombre y apellido.
 
-        root5.getRight().getLeft().setRight(new TreeNodeChar('A'));
+        Proponga y describa qué estructuras de datos utilizaría para responder eficientemente a los
+        servicios pedidos. Muestre gráficamente cómo se relacionan.
+        */
 
-        // Crear nuevo árbol
-        BinaryTreeChar btc = new BinaryTreeChar(root5);
+        /*
+        Ejercicio 4 (2do intento)
+        Se desea desarrollar una aplicación para mejorar la atención de una biblioteca en cuanto a la
+        búsqueda de libros dentro del catálogo disponible. Cada libro estará compuesto por un
+        identificador único y datos propios de los libros (título, autor, géneros, año de publicación,
+        cantidad de ejemplares, etc.)
 
-        // Definir N
-        int N = 2;
+        Se sabe, además, que los libros nuevos se agregan al catálogo en horarios fuera de la
+        atención al público.
 
-        // Imprimir las palabras con N vocales
-        System.out.println(btc.searchWordsWithNVowels(N));
+        Se desean proveer los siguientes servicios:
 
-        System.out.println();
+        • Obtener la cantidad de ejemplares de un libro dado su identificador único.
+        • Obtener todos los libros de un género dado.
+        • Obtener todos los libros publicados entre dos años de publicación dados.
 
-        // Ejercicio 6
-        // Crear nuevos libros
-        Book book1 = new Book(123456, "Jorge Luis Borges", 1996, 2);
-        book1.addGenero("Terror");
+        Responda y justifique:
 
-        Book book2 = new Book(123457, "Julio Cortázar", 1997, 3);
-        book2.addGenero("Fantástico");
-        book2.addGenero("Terror");
+        1) ¿Qué estructura de datos utilizaría para almacenar todos los libros en memoria dentro
+        de la aplicación?
 
-        Book book3 = new Book(123455, "Ernesto Sábato", 1995, 4);
-        book3.addGenero("Fantástico");
-        book3.addGenero("Ciencia Ficción");
-        book3.addGenero("Terror");
+        Utilizaría un árbol de búsqueda binario ordenado por el identificador único de los libros.
+        Esto permitiría una búsqueda rápida de libros por su identificador único y también proporcionaría
+        una forma eficiente de agregar nuevos libros al catálogo.
 
-        // Crear nuevo árbol
-        BinarySearchTreeBook bstb = new BinarySearchTreeBook();
+        2) ¿Cómo resolvería cada uno de los servicios solicitados? ¿Utilizaría alguna estructura
+        adicional de acceso para mejorar el costo de respuesta de cada servicio?
 
-        // Añadir libros
-        bstb.add(book1);
-        bstb.add(book2);
-        bstb.add(book3);
+        • Obtener la cantidad de ejemplares de un libro dado su identificador único.
+        Para este servicio, simplemente se buscaría el libro por su identificador único en el árbol de búsqueda. La cantidad de ejemplares se obtendría del nodo correspondiente encontrado en el árbol.
 
-        // Obtener la cantidad de ejemplares de un libro dado su identificador único.
-        int idBuscado = 123455;
-        System.out.println("La cantidad de ejemplares del Libro con id " + idBuscado + " es " + bstb.obtenerCantEjemplares(idBuscado) + ".");
+        • Obtener todos los libros de un género dado.
+        Se podría mejorar la eficiencia de este servicio utilizando un índice adicional que mapee
+        cada género a una lista de libros que pertenecen a ese género.
 
-        // Obtener todos los libros de un género dado.
-        String generoBuscado = "Ciencia Ficción";
-        System.out.println(bstb.obtenerLibrosPorGenero(generoBuscado));
-
-        // Obtener todos los libros publicados entre dos años de publicación dados.
-        int anioPublicacion1 = 1990;
-        int anioPublicacion2 = 2000;
-        System.out.println(bstb.obtenerLibrosEntreAniosPublicacion(anioPublicacion1, anioPublicacion2));
+        • Obtener todos los libros publicados entre dos años de publicación dados.
+        Similar al servicio 2, se podría utilizar un índice adicional que mapee los años de publicación
+        a una lista de libros publicados en ese año.
+        */
     }
 }
