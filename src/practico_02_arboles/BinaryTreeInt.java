@@ -1,4 +1,4 @@
-package practico_02_01;
+package practico_02_arboles;
 
 public class BinaryTreeInt {
     private TreeNodeInt root;

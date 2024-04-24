@@ -1,4 +1,4 @@
-package practico_03;
+package practico_03_hashing;
 
 public class Main {
     public static void main(String[] args) {

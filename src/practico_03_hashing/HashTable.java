@@ -1,4 +1,4 @@
-package practico_03;
+package practico_03_hashing;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
