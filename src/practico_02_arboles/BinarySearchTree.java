@@ -186,22 +186,26 @@ public class BinarySearchTree {
     // La complejidad es O(n), ya que recorre todos los nodos del árbol.
     public List<Integer> getLongestBranch() {
         List<Integer> longestBranch = new ArrayList<>();
-        getLongestBranch(root, longestBranch);
+        List<Integer> currentBranch = new ArrayList<>();
+        getLongestBranch(root, longestBranch, currentBranch, 0);
         return longestBranch;
     }
 
-    private void getLongestBranch(TreeNodeInt node, List<Integer> longestBranch) {
+    private void getLongestBranch(TreeNodeInt node, List<Integer> longestBranch, List<Integer> currentBranch, int level) {
         if (node != null) {
-            longestBranch.add(node.getValue());
+            currentBranch.add(node.getValue());
 
-            int leftHeight = getHeight(node.getLeft());
-            int rightHeight = getHeight(node.getRight());
-
-            if (leftHeight >= rightHeight) {
-                getLongestBranch(node.getLeft(), longestBranch);
+            if (node.getLeft() == null && node.getRight() == null) {
+                if (currentBranch.size() > longestBranch.size()) {
+                    longestBranch.clear();
+                    longestBranch.addAll(currentBranch);
+                }
             } else {
-                getLongestBranch(node.getRight(), longestBranch);
+                getLongestBranch(node.getLeft(), longestBranch, currentBranch, level + 1);
+                getLongestBranch(node.getRight(), longestBranch, currentBranch, level + 1);
             }
+
+            currentBranch.remove(currentBranch.size() - 1);
         }
     }
 
