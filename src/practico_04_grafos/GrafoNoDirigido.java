@@ -1,5 +1,10 @@
 package practico_04_grafos;
 
+/*
+Ejercicio 1
+Implemente en JAVA las clases GrafoDirigido y GrafoNoDirigido.
+*/
+
 public class GrafoNoDirigido<T> extends GrafoDirigido<T> {
     @Override
     public void agregarArco(int verticeId1, int verticeId2, T etiqueta) {
