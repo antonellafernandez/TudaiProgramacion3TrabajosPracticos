@@ -1,62 +1,25 @@
 package practico_03_hashing;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
+import java.util.Hashtable;
 
 public class DynamicHashTable {
-    private int M;
-    private int threshold;
-    private ArrayList<LinkedList<Integer>> table;
+    private Hashtable<Integer, Integer> table;
 
-    public DynamicHashTable(int M, double loadFactor) {
-        this.M = M;
-        this.threshold = (int) (M * loadFactor);
-        table = new ArrayList<>(M);
-        for (int i = 0; i < M; i++) {
-            table.add(new LinkedList<>());
-        }
-    }
-
-    private int hash(int key) {
-        return key % M;
+    public DynamicHashTable(int initialCapacity, float loadFactor) {
+        table = new Hashtable<>(initialCapacity, loadFactor);
     }
 
     public void insert(int key) {
-        int index = hash(key);
-        table.get(index).add(key);
-
-        if (table.get(index).size() > threshold) {
-            resizeTable();
-        }
+        table.put(key, key);
     }
 
-    private void resizeTable() {
-        M *= 2;
-        threshold = (int) (M * 0.9);
-
-        ArrayList<LinkedList<Integer>> newTable = new ArrayList<>(M);
-
-        for (int i = 0; i < M; i++) {
-            newTable.add(new LinkedList<>());
-        }
-
-        for (LinkedList<Integer> list : table) {
-            for (int num : list) {
-                int index = num % M;
-                newTable.get(index).add(num);
-            }
-        }
-
-        table = newTable;
+    public int get(int key) {
+        return table.get(key);
     }
 
     public void printTable() {
-        for (int i = 0; i < M; i++) {
-            System.out.print(i + ": ");
-            for (int num : table.get(i)) {
-                System.out.print(num + " -> ");
-            }
-            System.out.println("null");
+        for (Integer key : table.keySet()) {
+            System.out.println(key + ": " + table.get(key));
         }
     }
 }

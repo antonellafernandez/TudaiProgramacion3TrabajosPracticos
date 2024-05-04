@@ -17,7 +17,7 @@ public class Main {
         int[] elements = {68, 42, 47, 5, 76, 95, 23, 88, 90, 85, 31, 71, 60, 10, 46, 61,
                 50, 92, 74, 6, 97, 66, 1, 56, 27, 7, 14, 92};
         int M = 7;
-        HashTable hashTable = new HashTable(M);
+        HashTable hashTable = new HashTable();
 
         System.out.println("Insertando elementos en Hashing Separado: ");
 
@@ -27,7 +27,7 @@ public class Main {
             System.out.println();
         }
 
-        double loadFactor = 0.9;
+        float loadFactor = 0.9f;
         DynamicHashTable dynamicHashTable = new DynamicHashTable(M, loadFactor);
 
         System.out.println("Insertando elementos en Hashing Separado con Crecimiento: ");

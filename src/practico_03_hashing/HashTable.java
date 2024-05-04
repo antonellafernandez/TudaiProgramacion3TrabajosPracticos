@@ -1,34 +1,31 @@
 package practico_03_hashing;
 
-import java.util.ArrayList;
+import java.util.Hashtable;
 import java.util.LinkedList;
 
 public class HashTable {
     private int M;
-    private ArrayList<LinkedList<Integer>> table;
+    private Hashtable<Integer, LinkedList<Integer>> table;
 
-    public HashTable(int M) {
-        this.M = M;
-        this.table = new ArrayList<>(M);
-
-        for (int i = 0; i < M; i++) {
-            this.table.add(new LinkedList<>());
-        }
-    }
-
-    private int hash(int key) {
-        return key % M;
+    public HashTable() {
+        this.table = new Hashtable<>();
     }
 
     public void insert(int key) {
         int index = hash(key);
-        this.table.get(index).add(key);
+        LinkedList<Integer> list = table.getOrDefault(index, new LinkedList<>());
+        list.add(key);
+        table.put(index, list);
+    }
+
+    private int hash(int key) {
+        return key;
     }
 
     public void printTable() {
-        for (int i = 0; i < M; i++) {
-            System.out.print(i + ": ");
-            for (int num : table.get(i)) {
+        for (int key : table.keySet()) {
+            System.out.print(key + ": ");
+            for (int num : table.get(key)) {
                 System.out.print(num + " -> ");
             }
             System.out.println("null");
