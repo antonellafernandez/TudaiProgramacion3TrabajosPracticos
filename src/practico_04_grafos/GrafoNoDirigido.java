@@ -22,4 +22,12 @@ public class GrafoNoDirigido<T> extends GrafoDirigido<T> {
     public int cantidadArcos() {
         return super.cantidadArcos() / 2;
     }
+
+    /*
+    Ejercicio 7
+    Dado un grafo no orientado que modela las rutas de la provincia de Buenos Aires, devolver
+    todos los caminos alternativos que se pueden tomar para ir desde la ciudad de Buenos Aires
+    a la ciudad de Tandil, considerando que en el tramo Las Flores-Rauch está cortado al tránsito.
+    */
+    
 }

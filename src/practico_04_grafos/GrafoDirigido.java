@@ -8,11 +8,6 @@ Implemente en JAVA las clases GrafoDirigido y GrafoNoDirigido.
 */
 
 /*
-Ejercicio 7
-Dado un grafo no orientado que modela las rutas de la provincia de Buenos Aires, devolver
-todos los caminos alternativos que se pueden tomar para ir desde la ciudad de Buenos Aires
-a la ciudad de Tandil, considerando que en el tramo Las Flores-Rauch está cortado al tránsito.
-
 Ejercicio 8
 Se dispone de un conjunto de tareas, donde cada tarea tiene un nombre, una descripción y
 una duración (medida en horas). Se sabe también que hay una dependencia en el orden
