@@ -3,6 +3,7 @@ package practico_04_grafos;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedList;
 
 /*
 Ejercicio 1
@@ -31,157 +32,148 @@ tarea más el tiempo de espera entre cada par de tareas: 70 horas.
 */
 
 public class GrafoDirigido<T> implements Grafo<T> {
-    private HashMap<Integer, HashSet<Integer>> grafo;
-    private HashMap<Integer, HashMap<Integer, T>> etiquetas;
+    private HashMap<Integer, LinkedList<Arco<T>>> vertices;
 
     public GrafoDirigido() {
-        this.grafo = new HashMap();
-        this.etiquetas = new HashMap();
+        this.vertices = new HashMap();
     }
     @Override
     public void agregarVertice(int verticeId) {
-        if (grafo.containsKey(verticeId)) {
+        if (vertices.containsKey(verticeId)) {
             System.out.println("El vértice " + verticeId + " ya se encuentra agregado.");
         } else {
-            grafo.put(verticeId, new HashSet<Integer>());
+            vertices.put(verticeId, new LinkedList<Arco<T>>());
         }
     }
 
     @Override
     public void borrarVertice(int verticeId) {
-        // Obtener el conjunto de adyacentes del vértice a eliminar
-        HashSet<Integer> vecinos = grafo.get(verticeId);
+        if (!vertices.containsKey(verticeId)) {
+            System.out.println("El vértice " + verticeId + " no existe.");
+        } else {
+            // Eliminar el vértice de los conjuntos de adyacentes de los demás vértices
+            for (Integer vecino : vertices.keySet()) {
+                LinkedList<Arco<T>> arcos = vertices.get(vecino);
+                arcos.removeIf(arco -> arco.getVerticeDestino() == verticeId);
+            }
 
-        // Salir del método si el vértice no existe
-        if (vecinos == null) {
-            return;
+            // Eliminar el vértice
+            vertices.remove(verticeId);
         }
-
-        // Eliminar el vértice de los conjuntos de adyacentes de los demás vértices
-        for (int vecino : vecinos) {
-            HashSet<Integer> conjunto = grafo.get(vecino);
-            conjunto.remove(verticeId);
-        }
-
-        // Eliminar el vértice del grafo
-        grafo.remove(verticeId);
     }
 
     @Override
     public void agregarArco(int verticeId1, int verticeId2, T etiqueta) {
-        if (!grafo.containsKey(verticeId1) || !grafo.containsKey(verticeId2)) {
+        if (!vertices.containsKey(verticeId1) || !vertices.containsKey(verticeId2)) {
             System.out.println("El grafo no contiene al menos uno de los vértices.");
         } else {
-            grafo.get(verticeId1).add(verticeId2);
-        }
-
-        if (!etiquetas.containsKey(verticeId1)) {
-            etiquetas.put(verticeId1, new HashMap<Integer, T>());
-            etiquetas.get(verticeId1).put(verticeId2, etiqueta);
+            vertices.get(verticeId1).add(new Arco<T>(verticeId1, verticeId2, etiqueta));
         }
     }
 
     @Override
     public void borrarArco(int verticeId1, int verticeId2) {
-        if (!grafo.containsKey(verticeId1) || !grafo.containsKey(verticeId2)) {
+        if (!vertices.containsKey(verticeId1) || !vertices.containsKey(verticeId2)) {
             System.out.println("El grafo no contiene al menos uno de los vértices.");
         } else {
-            // Eliminar verticeId2 de la lista de adyacencia de verticeId1
-            grafo.get(verticeId1).remove(verticeId2);
-
-            // Eliminar etiqueta correspondiente, si existe
-            if (etiquetas.containsKey(verticeId1) && etiquetas.get(verticeId2).containsKey(verticeId2)) {
-                etiquetas.get(verticeId1).remove(verticeId2);
-            }
+            // Eliminar el arco de la lista de adyacencia de verticeId1
+            LinkedList<Arco<T>> arcos = vertices.get(verticeId1);
+            arcos.removeIf(arco -> arco.getVerticeDestino() == verticeId2);
         }
     }
 
     @Override
     public boolean contieneVertice(int verticeId) {
-        return grafo.containsKey(verticeId);
+        return vertices.containsKey(verticeId);
     }
 
     @Override
     public boolean existeArco(int verticeId1, int verticeId2) {
-        if (!grafo.containsKey(verticeId1) || !grafo.containsKey(verticeId2)) {
+        if (!vertices.containsKey(verticeId1) || !vertices.containsKey(verticeId2)) {
             System.out.println("El grafo no contiene al menos uno de los vértices.");
+            return false;
         } else {
-            HashSet<Integer> vecinosVerticeId1 = grafo.get(verticeId1);
+            LinkedList<Arco<T>> arcos = vertices.get(verticeId1);
 
-            if (vecinosVerticeId1.contains(verticeId2)) {
-                return true;
-            } else {
-                return false;
+            for (Arco<T> arco : arcos) {
+                if (arco.getVerticeDestino() == verticeId2) {
+                    return true;
+                }
             }
+            return false;
         }
-
-        return false;
     }
 
     @Override
     public Arco<T> obtenerArco(int verticeId1, int verticeId2) {
-        if (!grafo.containsKey(verticeId1) || !grafo.containsKey(verticeId2)) {
+        if (!vertices.containsKey(verticeId1) || !vertices.containsKey(verticeId2)) {
             return null;
         } else if (existeArco(verticeId1, verticeId2)) {
-            T etiqueta = etiquetas.get(verticeId1).get(verticeId2);
-            Arco<T> arco = new Arco<T>(verticeId1, verticeId2, etiqueta);
+            LinkedList<Arco<T>> arcos = vertices.get(verticeId1);
 
-            return arco;
+            for (Arco<T> arco : arcos) {
+                if (arco.getVerticeDestino() == verticeId2) {
+                    return arco;
+                }
+            }
         }
-
-        return null;
+        return null; // Si no se encuentra el arco, devolver null
     }
 
     @Override
     public int cantidadVertices() {
-        return 0;
+        return vertices.size();
     }
 
     @Override
     public int cantidadArcos() {
-        return grafo.size();
+        int totalArcos = 0;
+
+        for (LinkedList<Arco<T>> arcos : vertices.values()) {
+            totalArcos += arcos.size();
+        }
+
+        return totalArcos;
     }
 
     @Override
     public Iterator<Integer> obtenerVertices() {
-        Iterator<Integer> iterador = grafo.keySet().iterator();
+        Iterator<Integer> iterador = vertices.keySet().iterator();
         return iterador;
     }
 
     @Override
     public Iterator<Integer> obtenerAdyacentes(int verticeId) {
-        HashSet<Integer> vecinos = grafo.get(verticeId);
-        Iterator<Integer> iteradorVecinos = vecinos.iterator();
-        return iteradorVecinos;
+        if (!vertices.containsKey(verticeId)) {
+            return null; // Manejar el caso donde el vértice no está en el grafo
+        }
+
+        LinkedList<Integer> vecinos = new LinkedList<>();
+
+        for (Arco<T> arco : vertices.get(verticeId)) {
+            vecinos.add(arco.getVerticeDestino());
+        }
+
+        return vecinos.iterator();
     }
 
     @Override
     public Iterator<Arco<T>> obtenerArcos() {
-        HashSet<Arco<T>> arcos = new HashSet<Arco<T>>();
+        LinkedList<Arco<T>> listaArcos = new LinkedList<>();
 
-        for (Integer origen : grafo.keySet()) {
-            for (Integer destino : grafo.get(origen)) { // keySet devuelve las claves del grafo
-                if (etiquetas.containsKey(origen) && etiquetas.get(origen).containsKey(destino)) {
-                    T etiqueta = etiquetas.get(origen).get(destino);
-                    arcos.add(new Arco<T>(origen, destino, etiqueta));
-                }
-            }
+        for (LinkedList<Arco<T>> listaAdyacencia : vertices.values()) {
+            listaArcos.addAll(listaAdyacencia);
         }
 
-        return arcos.iterator();
+        return listaArcos.iterator();
     }
 
     @Override
     public Iterator<Arco<T>> obtenerArcos(int verticeId) {
-        HashSet<Arco<T>> arcosVertice = new HashSet<Arco<T>>();
-
-        for(Integer destino : grafo.get(verticeId)) {
-            if(etiquetas.containsKey(verticeId) && etiquetas.get(verticeId).containsKey(destino)) {
-                T etiqueta = etiquetas.get(verticeId).get(destino);
-                arcosVertice.add(new Arco<T>(verticeId,destino,etiqueta));
-            }
+        if (!vertices.containsKey(verticeId)) {
+            return null; // Manejar el caso donde el vértice no está en el grafo
         }
 
-        return arcosVertice.iterator();
+        return vertices.get(verticeId).iterator();
     }
 }
